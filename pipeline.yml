@@ -1,0 +1,38 @@
+# pipeline_config.yaml
+pipeline:
+  name: sample_data_pipeline
+  schedule: "0 12 * * *"
+  default_args:
+    owner: data_team
+    retries: 3
+    retry_delay: 5m
+
+  tasks:
+    - id: task_1
+      name: Run Script 1
+      script: script_1.py
+      params:
+        input_file: /path/to/input_data_1.csv
+        output_file: /path/to/output_data_1.csv
+      log_file: /path/to/logs/task_1_output.log
+      dependencies: []
+
+    - id: task_2
+      name: Run Script 2
+      script: script_2.py
+      params:
+        input_file: /path/to/input_data_2.csv
+        threshold: 0.8
+      log_file: /path/to/logs/task_2_output.log
+      dependencies:
+        - task_1
+
+    - id: task_3
+      name: Run Script 3
+      script: script_3.py
+      params:
+        input_dir: /path/to/input_dir
+        log_level: INFO
+      log_file: /path/to/logs/task_3_output.log
+      dependencies:
+        - task_2
